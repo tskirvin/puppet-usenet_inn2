@@ -1,0 +1,22 @@
+<%# Generic readers.conf 'access' entry template, used by 
+    usenet_inn2::readers::access::fragment -%>
+# <%= @comment %>
+access <%= @name %> {
+    users:      <%= @users %>
+<% if @access != '' -%>
+    access:     <%= @access %>
+<% end -%>
+<% if @newsgroups != '' -%>
+    newsgroups: "<%= @newsgroups %>"
+<% end -%>
+<% if @groups_read != '' -%>
+    read:       "<%= @groups_read %>"
+<% end -%>
+<% if @groups_post != '' -%>
+    post:       "<%= @groups_post %>"
+<% end -%>
+<% if @perlfilter != 'true' -%>
+    perlfilter: <%= @perlfilter %>
+<% end -%>
+}
+

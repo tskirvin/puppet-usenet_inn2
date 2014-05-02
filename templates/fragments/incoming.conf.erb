@@ -1,0 +1,5 @@
+<%# Generic incoming.conf peer template, used by usenet_inn2::peer %>
+peer <%= @name %> {
+    hostname:    <%= @srv_in %>
+    patterns:    <%= @feed_incoming %>
+}
