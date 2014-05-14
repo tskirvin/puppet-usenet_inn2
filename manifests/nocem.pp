@@ -16,6 +16,6 @@ class usenet_inn2::nocem (
     'bleachbot':
       ensure => present,
       issuer => 'bleachbot@httrack.com',
-      type   => 'mmf,spam';
+      type   => 'site,spam';
   }
 }
