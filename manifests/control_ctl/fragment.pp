@@ -1,26 +1,38 @@
-# Generate an entry in /etc/news/control.ctl.local (or equivalent).  Uses 
-# concat::fragment to do the merging.
+# usenet_inn2::control_ctl::fragment (definition)
 #
-# Usage: 
+#   Generate an entry in /etc/news/control.ctl.local (or equivalent).  Uses
+#   concat::fragment to do the merging.
 #
-#   usenet_inn2::control_ctl::fragment { '<name>':
-#     ensure     => present | absent,
-#     message    => 'newgroup' | 'rmgroup' | 'checkgroups' | <other>,
-#     from       => '<address>',
-#     newsgroups => '<pattern>',
-#     action     => 'doit' | 'drop' | 'log' | 'verify-pgp_userid'
+#   Please see control.ctl(5) for details on each parameter.
+#
+# == Parameters
+#
+#   action      String: 'doit', 'drop', 'log', or 'verify-pgp_userid'.
+#               No default, required.
+#   ensure      String: 'present' or 'absent'.  Default: 'present'.
+#   message     String: 'newgroup', 'rmgroup', 'checkgroups', or perhaps
+#               something else.  No default, required.
+#   from        String: address pattern to match.  No default, required.
+#   newsgroups  String: newsgroup pattern to match.  No default, required.
+#
+# == Usage
+#
+#   usenet_inn2::control_ctl::fragment { 'foobar-newgroup':
+#     message    => 'newgroup',
+#     from       => 'foobar-control@example.invalid',
+#     newsgroups => 'foobar.*',
+#     action     => 'doit'
 #   }
 #
-# Please see the control.ctl man page for details on the proper values for 
-# message/from/newsgroups/action.
-
 define usenet_inn2::control_ctl::fragment (
   $ensure     = 'present',
-  $message,
-  $from,
-  $newsgroups,
-  $action
+  $action     = undef,
+  $message    = undef,
+  $from       = undef,
+  $newsgroups = undef
 ) {
+  validate_string ($ensure, $action, $message, $from, $newsgroups)
+
   include usenet_inn2::control_ctl
 
   $config = $usenet_inn2::control_ctl::config

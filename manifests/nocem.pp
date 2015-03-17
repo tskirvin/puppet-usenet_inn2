@@ -1,14 +1,18 @@
-# Configuration to support NoCeM filtering from a server.  Consists of three
-# parts: a managing /etc/news/nocem.ctl, managing a GPG file for valid 
-# keys, and actually adding entries to listen to.
-
-class usenet_inn2::nocem (
-) inherits usenet_inn2::params {
+# usenet_inn2::nocem
+#
+#   Enables NoCeM filtering on a server.  This mostly consists of loading
+#   sub-classes, and configuring two default filters: 'bleachbot' and
+#   'vlad-pgpmoose'.
+#
+#   See usenet_inn2::nocem::gpg, usenet_inn2::nocem::newsfeeds, and
+#   usenet_inn2::nocem::ctl for more details.
+#
+class usenet_inn2::nocem () {
+  include usenet_inn2::nocem::ctl
   include usenet_inn2::nocem::gpg
   include usenet_inn2::nocem::newsfeeds
-  include usenet_inn2::nocem::ctl
 
-  usenet_inn2::nocem::fragment { 
+  usenet_inn2::nocem::fragment {
     'vlad-pgpmoose':
       ensure => present,
       issuer => 'pgpmoose@killfile.org',

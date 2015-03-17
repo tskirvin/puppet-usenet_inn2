@@ -1,34 +1,39 @@
-# Generate per-peer entries in the files that configure news feeds, based on
-# individual ERB templates:
+# usenet_inn2::peer (definition)
 #
-#   /etc/news/incoming.conf   ../templates/fragments/incoming.conf.erb
-#   /etc/news/innfeed.conf    ../templates/fragments/innfeed.conf.erb
-#   /etc/news/newsfeeds       ../templates/fragments/newsfeeds.erb
-# 
-# Usage:
+#   Generates per-peer entries in the files that configure news feeds:
 #
-#   usenet_inn2::peer { '<name>':
-#     ensure     => present | absent,
-#     comment    => [ '<optional text>' ],
-#     contact    => [ '<name and email address>' ],
-#     incoming   => [ '<incoming feed spec>' ],
-#     outgoing   => [ '<outgoing feed spec>' ],
-#     server     => [ '<server name' ],
-#     server_in  => [ '<server name>' ],
-#     server_out => [ '<server name>' ]
+#     /etc/news/incoming.conf   incoming.conf(5)  usenet_inn2::incoming
+#     /etc/news/innfeed.conf    innfeed.conf(5)   usenet_inn2::innfeed
+#     /etc/news/newsfeeds       newsfeeds(5)      usenet_inn2::newsfeeds
+#
+# == Parameters
+#
+#   Most parameters come from the appropriate man pages.  The exception is
+#   'server' vs 'server_in'/'server_out'.  In short, this is necessary for
+#   hosts that send news from a different host name from which they receive
+#   news.  If possible, you should just use 'server'.
+#
+#     ensure      String - 'present' or 'absent',  Default: 'present'
+#     comment     String - optional text.  Default: ''
+#     contact     String - contact information for the site admin.  You should
+#                 set this.  Default: 'unknown@unknown.invalid'
+#     incoming    String - incoming feed specification.  Default: ''.
+#     outgoing    String - outgoing feed specification.  Default: ''.
+#     server      String - server name.  Default: 'NOSERVER'.
+#     server_in   String - incoming server name.  Overrides 'server'.  No
+#                 (useful) default.
+#     server_out  String - outgoing server name.  Overrides 'server'.  No
+#                 (useful) default.
+#
+# == Usage
+#
+#   usenet_inn2::peer { 'foobar':
+#     comment  => 'foo and bar are friends'
+#     server   => 'news.foobar.example',
+#     contact  => 'baz@foobar.example'
+#     incoming => '*',
+#     outgoing => '!*,rec.*,comp.*'
 #   }
-#
-# The incoming feed spec is defined in incoming.conf(5)
-# The outgoing feed spec is defined in newsfeeds(5)
-#
-# server vs server_in/server_out is necessary for hosts that send news from
-# a different hostname as they receive.  In general, just use server.
-#
-# Note that the "base" information for these files is configured in:
-#
-#   incoming.conf     usenet_inn2::incoming
-#   innfeed.conf      usenet_inn2::innfeed
-#   newsfeeds         usenet_inn2::newsfeeds
 #
 define usenet_inn2::peer (
   $ensure     = 'present',
@@ -40,9 +45,8 @@ define usenet_inn2::peer (
   $server_in  = 'NOSERVER',
   $server_out = 'NOSERVER'
 ) {
-  # include usenet_inn2::incoming
-  # include usenet_inn2::newsfeeds
-  # include usenet_inn2::innfeed
+  validate_string ($ensure, $comment, $contact, $incoming, $outgoing)
+  validate_string ($server, $server_in, $server_out)
 
   $incoming_conf = $usenet_inn2::incoming::config
   $newsfeeds     = $usenet_inn2::newsfeeds::config
@@ -58,7 +62,7 @@ define usenet_inn2::peer (
   $feed_outgoing = $outgoing
 
   if ($incoming != '') {
-    concat::fragment { "incoming_$name":
+    concat::fragment { "incoming_${name}":
       ensure  => $ensure,
       target  => $incoming_conf,
       content => template ('usenet_inn2/fragments/incoming.conf.erb')
@@ -66,12 +70,12 @@ define usenet_inn2::peer (
   }
 
   if ($outgoing != '') {
-    concat::fragment { "newsfeeds_$name":
+    concat::fragment { "newsfeeds_${name}":
       ensure  => $ensure,
       target  => $newsfeeds,
       content => template ('usenet_inn2/fragments/newsfeeds.erb')
     }
-    concat::fragment { "innfeed_$name":
+    concat::fragment { "innfeed_${name}":
       ensure  => $ensure,
       target  => $innfeed_conf,
       content => template ('usenet_inn2/fragments/innfeed.conf.erb')

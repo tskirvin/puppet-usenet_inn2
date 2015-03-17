@@ -1,13 +1,17 @@
-# Create and manage /etc/news/incoming.conf (or similar).  This file defines 
-# which articles are received from which servers.
+# usenet_inn2::incoming
 #
-# The underlying file is managed with the concat module and the template
-# incoming.conf.erb .  Also, when changes are made to the config file, we will
-# run 'ctlinnd reload incoming.conf' (as defined in usenet_inn2::ctlinnd).
+#   Create and manage /etc/news/incoming.conf.  This file defines
+#   which articles are received from which servers.
 #
-# Stanzas are created using the usenet_inn2::peer definition.
-# 
-# Usage (defaults come from usenet_inn2::params):
+#   The underlying file is managed with the concat module and the template
+#   incoming.conf.erb .  Also, when changes are made to the config file, we will
+#   run 'ctlinnd reload incoming.conf' (as defined in usenet_inn2::ctlinnd).
+#
+#   Stanzas are created using the usenet_inn2::peer definition.
+#
+# == Usage
+#
+#   Defaults come from usenet_inn2::params:
 #
 #   class { 'usenet_inn2::incoming':
 #     $news_group => [ '<unix-group>' ],
@@ -24,10 +28,10 @@ class usenet_inn2::incoming (
   $config = "${path_conf}/incoming.conf"
 
   concat { $config:
-    owner => $news_user,
-    group => $news_group,
-    notify => Exec["ctlinnd reload incoming"],
-    mode  => 0644;
+    owner  => $news_user,
+    group  => $news_group,
+    notify => Exec['ctlinnd reload incoming'],
+    mode   => 0644;
   }
 
   usenet_inn2::ctlinnd { 'reload incoming':

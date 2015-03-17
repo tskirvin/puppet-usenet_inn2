@@ -1,24 +1,29 @@
-# Create and manage /etc/news/innfeed.conf (or similar).  This file defines 
-# the hosts that we send files to via innfeed.
+# usenet_inn2::innfeed
 #
-# The underlying file is managed with the concat module and the template
-# innfeed.conf.erb . 
-# 
-# Stanzas are created using the usenet_inn2::peer definition.
-# 
-# Usage (defaults come from usenet_inn2::params):
-#  
+#   Create and manage /etc/news/innfeed.conf (or similar).  This file defines
+#   the hosts that we send files to via innfeed.
+#
+#   The underlying file is managed with the concat module and the template
+#   innfeed.conf.erb .
+#
+#   Stanzas are created using the usenet_inn2::peer definition.
+#
+# == Usage
+#
+#   Defaults come from usenet_inn2::params):
+#
 #   class { 'usenet_inn2::innfeed':
 #     $news_group => [ '<unix-group>' ],
 #     $news_user  => [ '<unix-user>' ],
 #     $path_conf  => [ '<path-to-files>' ]
-#   } 
-#   
+#   }
+#
 class usenet_inn2::innfeed (
   $news_group = $usenet_inn2::params::news_group,
   $news_user  = $usenet_inn2::params::news_user,
   $path_conf  = $usenet_inn2::params::path_conf
 ) inherits usenet_inn2::params {
+  validate_string ($news_group, $news_user, $path_conf)
 
   $config = "${path_conf}/innfeed.conf"
 

@@ -1,22 +1,33 @@
-# Generate an entry in /etc/news/nocem.ctl (or equivalent).  Uses 
-# concat::fragment to do the merging.
+# usenet_inn2::nocem::fragment (definition)
 #
-# Usage: 
+#   Generate an entry in /etc/news/nocem.ctl (or equivalent).  Uses
+#   concat::fragment to do the merging.
 #
-#   usenet_inn2::nocem::fragment { '<name>':
-#     ensure     => present | absent,
-#     issuer     => '<address>',
-#     type       => '<nocem-type>'
+#   Please see the perl-nocem man page for details on the proper values for
+#   issuer/type.
+#
+# == Parameters
+#
+#   ensure     => present | absent,
+#   issuer     => '<address>',
+#   type       => '<nocem-type>'
+#
+# == Usage
+#
+#   usenet_inn2::nocem::fragment { 'foobar':
+#     ensure => present
+#     issuer => 'foo@bar.invalid',
+#     type   => 'testing'
 #   }
 #
-# Please see the perl-nocem man page for details on the proper values for 
-# issuer/type.
 
 define usenet_inn2::nocem::fragment (
-  $ensure     = 'present',
-  $issuer,
-  $type
+  $ensure = 'present',
+  $issuer = undef,
+  $type   = undef
 ) {
+  validate_string ($ensure, $issuer, $type)
+
   include usenet_inn2::nocem::ctl
 
   $config = $usenet_inn2::nocem::ctl::config

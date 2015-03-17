@@ -21,6 +21,7 @@ class usenet_inn2::storage (
   $news_user  = $usenet_inn2::params::news_user,
   $path_conf  = $usenet_inn2::params::path_conf
 ) inherits usenet_inn2::params {
+  validate_string ($news_group, $news_user, $path_conf)
 
   $config = "${path_conf}/storage.conf"
 
@@ -42,7 +43,6 @@ class usenet_inn2::storage (
     keyword => 'storage.conf',
     file    => $config
   }
-
 
   usenet_inn2::storage::fragment { 'catchall':
     number     => 255,

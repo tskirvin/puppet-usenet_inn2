@@ -1,27 +1,33 @@
-# Create and manage /etc/news/expire.ctl (or similar).  This file defines 
-# how long it takes to expire articles.
+# usenet_inn2::expire
 #
-# The underlying file is managed with the concat module and the template
-# expire.ctl.erb .  Also, when changes are made to the config file, we will
-# run 'ctlinnd reload expire.ctl' (as defined in usenet_inn2::ctlinnd).
+#   Create and manage /etc/news/expire.ctl (or similar).  This file defines
+#   how long it takes to expire articles.
 #
-# Stanzas are created using the usenet_inn2::peer definition.
-# 
-# Usage (defaults come from usenet_inn2::params):
+#   The underlying file is managed with the concat module and the template
+#   expire.ctl.erb .  Also, when changes are made to the config file, we will
+#   run 'ctlinnd reload expire.ctl' (as defined in usenet_inn2::ctlinnd).
+#
+#   Stanzas are created using the usenet_inn2::expire::fragment definition.
+#
+# == Usage
+#
+#   Defaults come from usenet_inn2::params
 #
 #   class { 'usenet_inn2::expire':
-#     $remember   => [ '<days>' ],
 #     $news_group => [ '<unix-group>' ],
 #     $news_user  => [ '<unix-user>' ],
-#     $path_conf  => [ '<path-to-files>' ]
+#     $path_conf  => [ '<path-to-files>' ],
+#     $remember   => [ '<days>' ]
 #   }
 #
 class usenet_inn2::expire (
-  $remember   = $usenet_inn2::params::article_cutoff,
   $news_group = $usenet_inn2::params::news_group,
   $news_user  = $usenet_inn2::params::news_user,
-  $path_conf  = $usenet_inn2::params::path_conf
+  $path_conf  = $usenet_inn2::params::path_conf,
+  $remember   = $usenet_inn2::params::article_cutoff
 ) inherits usenet_inn2::params {
+  # validate_integer ($remember)
+  validate_string ($news_group, $news_user, $path_conf)
 
   $config = "${path_conf}/expire.ctl"
 

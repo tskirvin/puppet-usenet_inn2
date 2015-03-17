@@ -1,0 +1,55 @@
+# usenet_inn2::inn_conf
+#
+#   Manage /etc/news/inn.conf via template.
+#
+# == Parameters
+#
+#   Default values for these parameters come from usenet_inn2::params unless
+#   otherwise noted.
+#
+#     article_cutoff  Integer: how many days should we remember articles?
+#     hismethod       String: 'hisv6'.
+#     host_name       String: what host name should we be (internally)?
+#                     Default: $::fqdn
+#     news_group      String: e.g. 'news'
+#     news_user       String: e.g. 'news'
+#     organization    String: organization name for posts coming from this
+#                     server.  No default, required.
+#     path_bin        String: e.g. '/usr/lib/news/bin'
+#     path_conf       String: e.g. '/etc/news'
+#     path_db         String: e.g. '/var/lib/news/db'
+#     path_log        String: e.g. '/var/log/news'
+#     path_news       String: e.g. '/usr/lib/news'
+#     path_run        String: e.g. '/var/run/news'
+#     path_spool      String: e.g. '/var/spool/news'
+#     port            Integer: e.g. 119
+#
+class usenet_inn2::inn_conf (
+  $article_cutoff = $usenet_inn2::params::article_cutoff,
+  $hismethod      = 'hisv6',
+  $host_name      = $::fqdn,
+  $news_group     = $usenet_inn2::params::news_group,
+  $news_user      = $usenet_inn2::params::news_user,
+  $organization   = undef,
+  $ovmethod       = 'tradindexed',
+  $path_bin       = $usenet_inn2::params::path_bin,
+  $path_conf      = $usenet_inn2::params::path_conf,
+  $path_db        = $usenet_inn2::params::path_db,
+  $path_log       = $usenet_inn2::params::path_log,
+  $path_news      = $usenet_inn2::params::path_news,
+  $path_run       = $usenet_inn2::params::path_run,
+  $path_spool     = $usenet_inn2::params::path_spool,
+  $port           = $usenet_inn2::params::port
+) inherits usenet_inn2::params {
+  # validate_integer ($article_cutoff, $port)
+  validate_string ($hismethod, $host_name, $news_group, $news_user)
+  validate_string ($organization, $host_name, $path_bin, $path_conf)
+  validate_string ($path_db, $path_log, $path_news, $path_run, $path_spool)
+
+  file { "${path_conf}/inn.conf":
+    ensure  => present,
+    owner   => $news_user,
+    group   => $news_group,
+    content => template ('usenet_inn2/inn.conf.erb');
+  }
+}
