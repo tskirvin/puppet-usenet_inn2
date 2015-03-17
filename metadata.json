@@ -1,6 +1,6 @@
 {
   "name": "tskirvin-usenet_inn2",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Tim Skirvin <tskirvin@killfile.org>",
   "summary": "run a Usenet news server using INN2",
   "license": "Apache License, Version 2.0",
