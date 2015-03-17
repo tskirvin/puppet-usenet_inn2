@@ -89,7 +89,7 @@ Managed with `usenet_inn2::inn_conf`.
 
 #### /etc/news/incoming.conf, /etc/news/innfeed.conf, /etc/news/newsfeeds
 
-Managed with `usenet_inn2::incoming.conf`, `usenet_inn2::innfeed`, and
+Managed with `usenet_inn2::incoming`, `usenet_inn2::innfeed`, and
 `usenet_inn2::newsfeeds`, respectfully.  Individual entries are loaded
 with `usenet_inn2::peer`:
 
