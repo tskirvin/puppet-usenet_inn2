@@ -7,7 +7,6 @@
 #
 # == Parameters
 #
-#   ensure    String.  'present' or 'absent'; default 'present'.
 #   access    String.  No default.
 #   auth      String.  Default: ''
 #   comment   String.  Default: ''
@@ -17,7 +16,6 @@
 # == Usage
 #
 #   usenet_inn2::readers::auth::fragment { '<name>':
-#     ensure      => present | absent,
 #     access      => <user-group>,      # matches 'default'
 #     auth        => [ '<script-to-run>' ],
 #     comment     => [ '<comment>' ],
@@ -30,16 +28,12 @@
 # options; this is a difficult file!
 
 define usenet_inn2::readers::auth::fragment (
-  $ensure      = 'present',
-  $access      = undef,
-  $auth        = '',
-  $comment     = '',
-  $hosts       = '*',
-  $order       = 20
+  String $access,
+  String $auth        = '',
+  String $comment     = '',
+  String $hosts       = '*',
+  Integer $order       = 20
 ) {
-  validate_string ($order)
-  validate_string ($ensure, $access, $auth, $comment, $hosts)
-
   include usenet_inn2::readers
 
   $config = $usenet_inn2::readers::config
@@ -47,7 +41,6 @@ define usenet_inn2::readers::auth::fragment (
   $o = 300 + $order
 
   concat::fragment { "auth-${name}":
-    ensure  => $ensure,
     target  => $config,
     order   => $o,
     content => template ('usenet_inn2/fragments/readers_auth.conf.erb'),

@@ -21,20 +21,17 @@
 #   }
 #
 class usenet_inn2::expire (
-  $news_group = $usenet_inn2::params::news_group,
-  $news_user  = $usenet_inn2::params::news_user,
-  $path_conf  = $usenet_inn2::params::path_conf,
-  $remember   = $usenet_inn2::params::article_cutoff
+  String $news_group = $usenet_inn2::params::news_group,
+  String $news_user  = $usenet_inn2::params::news_user,
+  String $path_conf  = $usenet_inn2::params::path_conf,
+  Integer $remember   = $usenet_inn2::params::article_cutoff
 ) inherits usenet_inn2::params {
-  # validate_integer ($remember)
-  validate_string ($news_group, $news_user, $path_conf)
-
   $config = "${path_conf}/expire.ctl"
 
   concat { $config:
     owner => $news_user,
     group => $news_group,
-    mode  => 0644;
+    mode  => '0644';
   }
 
   concat::fragment { 'expire_header':

@@ -31,13 +31,12 @@ class usenet_inn2::incoming (
     owner  => $news_user,
     group  => $news_group,
     notify => Exec['ctlinnd reload incoming'],
-    mode   => 0644;
+    mode   => '0644';
   }
 
   usenet_inn2::ctlinnd { 'reload incoming':
     action  => 'reload',
-    keyword => 'incoming.conf',
-    file    => $config
+    keyword => 'incoming.conf'
   }
 
   concat::fragment { 'incoming_header':

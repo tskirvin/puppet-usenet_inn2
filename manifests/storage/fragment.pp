@@ -7,7 +7,6 @@
 #
 # == Parameters
 #
-#   ensure      String.  'present' or 'absent'; default 'present'.
 #   art_expires String.  Default: ''
 #   art_size    String.  Default: ''
 #   exactmatch  String.  Default: ''
@@ -20,7 +19,6 @@
 # == Usage
 #
 #   usenet_inn2::storage::fragment { '<name>':
-#     ensure      => present | absent,
 #     art_expires => [ <mintime> [,<maxtime>]],
 #     art_size    => [ <minsize> [,<maxsize>]],
 #     exactmatch  => [ <bool> ],
@@ -34,25 +32,19 @@
 # values.
 
 define usenet_inn2::storage::fragment (
-  $ensure      = 'present',
-  $art_expires = '',
-  $art_size    = '',
-  $exactmatch  = '',
-  $newsgroups  = '*',
-  $number      = undef,
-  $options     = '',
-  $storage     = 'tradspool'
+  Integer $number,
+  String $art_expires = '',
+  String $art_size    = '',
+  String $exactmatch  = '',
+  String $newsgroups  = '*',
+  String $options     = '',
+  String $storage     = 'tradspool'
 ) {
-  validate_string ($number)
-  validate_string ($ensure, $storage, $newsgroups, $art_size)
-  validate_string ($art_expires, $exactmatch, $options)
-
   include usenet_inn2::storage
 
   $config = $usenet_inn2::storage::config
 
   concat::fragment { "${number}-${name}":
-    ensure  => $ensure,
     target  => $config,
     content => template ('usenet_inn2/fragments/storage.conf.erb'),
   }

@@ -1,21 +1,28 @@
 {
   "name": "tskirvin-usenet_inn2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Tim Skirvin <tskirvin@killfile.org>",
   "summary": "run a Usenet news server using INN2",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/tskirvin/puppet-usenet_inn2",
   "project_page": "https://github.com/tskirvin/puppet-usenet_inn2",
   "issues_url": "",
-  "tags": [ "inn2", "usenet", "netnews" ],
+  "tags": [
+    "inn2",
+    "usenet",
+    "netnews"
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
-      "operatingsystemmajrelease": [ "6", "7" ]
+      "operatingsystemmajrelease": [
+        "6",
+        "7"
+      ]
     }
   ],
   "dependencies": [
-    { "name": "puppetlabs/concat", "version_requirement": ">= 1.0.2" },
-    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.5.1" }
+    {"name":"puppetlabs/concat","version_requirement":">= 1.0.2 <= 2.0.0"},
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.5.1 <= 6.0.0"}
   ]
 }

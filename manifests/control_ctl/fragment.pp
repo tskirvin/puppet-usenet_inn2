@@ -9,7 +9,6 @@
 #
 #   action      String: 'doit', 'drop', 'log', or 'verify-pgp_userid'.
 #               No default, required.
-#   ensure      String: 'present' or 'absent'.  Default: 'present'.
 #   message     String: 'newgroup', 'rmgroup', 'checkgroups', or perhaps
 #               something else.  No default, required.
 #   from        String: address pattern to match.  No default, required.
@@ -25,20 +24,17 @@
 #   }
 #
 define usenet_inn2::control_ctl::fragment (
-  $ensure     = 'present',
   $action     = undef,
   $message    = undef,
   $from       = undef,
   $newsgroups = undef
 ) {
-  validate_string ($ensure, $action, $message, $from, $newsgroups)
 
   include usenet_inn2::control_ctl
 
   $config = $usenet_inn2::control_ctl::config
 
   concat::fragment { $name:
-    ensure  => $ensure,
     target  => $config,
     content => template ('usenet_inn2/fragments/control.ctl.erb'),
   }

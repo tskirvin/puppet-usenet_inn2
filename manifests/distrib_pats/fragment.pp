@@ -8,7 +8,6 @@
 # == Usage
 #
 #   usenet_inn2::distrib_pats::fragment { '<name>':
-#     ensure  => present | absent,
 #     order   => [ '<count>' ],
 #     pattern => '<pattern>',
 #     value   => '<value>'
@@ -16,21 +15,18 @@
 #   }
 #
 define usenet_inn2::distrib_pats::fragment (
-  $ensure  = 'present',
-  $order   = 'NONE',
+  String $order   = 'NONE',
   $pattern = undef,
   $value   = undef,
   $weight  = undef
 ) {
   include usenet_inn2::distrib_pats
-  validate_string ($ensure, $order, $pattern, $value, $weight)
 
   $config = $usenet_inn2::distrib_pats::config
 
   if ($order == 'NONE') { $o = undef } else { $o = $order }
 
   concat::fragment { "dist_${name}":
-    ensure  => $ensure,
     target  => $config,
     content => "${weight}:${pattern}:${value}\n",
     order   => $o

@@ -25,29 +25,23 @@
 #     port            Integer: e.g. 119
 #
 class usenet_inn2::inn_conf (
-  $article_cutoff = $usenet_inn2::params::article_cutoff,
-  $hismethod      = 'hisv6',
-  $host_name      = $::fqdn,
-  $news_group     = $usenet_inn2::params::news_group,
-  $news_user      = $usenet_inn2::params::news_user,
-  $organization   = undef,
-  $ovmethod       = 'tradindexed',
-  $path_bin       = $usenet_inn2::params::path_bin,
-  $path_conf      = $usenet_inn2::params::path_conf,
-  $path_db        = $usenet_inn2::params::path_db,
-  $path_log       = $usenet_inn2::params::path_log,
-  $path_news      = $usenet_inn2::params::path_news,
-  $path_run       = $usenet_inn2::params::path_run,
-  $path_spool     = $usenet_inn2::params::path_spool,
-  $port           = $usenet_inn2::params::port
+  Integer $article_cutoff = $usenet_inn2::params::article_cutoff,
+  String $hismethod      = 'hisv6',
+  String $host_name      = $::fqdn,
+  String $news_group     = $usenet_inn2::params::news_group,
+  String $news_user      = $usenet_inn2::params::news_user,
+  String $organization   = undef,
+  String $ovmethod       = 'tradindexed',
+  String $path_bin       = $usenet_inn2::params::path_bin,
+  String $path_conf      = $usenet_inn2::params::path_conf,
+  String $path_db        = $usenet_inn2::params::path_db,
+  String $path_log       = $usenet_inn2::params::path_log,
+  String $path_news      = $usenet_inn2::params::path_news,
+  String $path_run       = $usenet_inn2::params::path_run,
+  String $path_spool     = $usenet_inn2::params::path_spool,
+  Integer $port          = $usenet_inn2::params::port
 ) inherits usenet_inn2::params {
-  # validate_integer ($article_cutoff, $port)
-  validate_string ($hismethod, $host_name, $news_group, $news_user)
-  validate_string ($organization, $host_name, $path_bin, $path_conf)
-  validate_string ($path_db, $path_log, $path_news, $path_run, $path_spool)
-
   file { "${path_conf}/inn.conf":
-    ensure  => present,
     owner   => $news_user,
     group   => $news_group,
     content => template ('usenet_inn2/inn.conf.erb');

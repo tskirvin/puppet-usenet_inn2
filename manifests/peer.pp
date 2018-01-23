@@ -13,7 +13,6 @@
 #   hosts that send news from a different host name from which they receive
 #   news.  If possible, you should just use 'server'.
 #
-#     ensure      String - 'present' or 'absent',  Default: 'present'
 #     comment     String - optional text.  Default: ''
 #     contact     String - contact information for the site admin.  You should
 #                 set this.  Default: 'unknown@unknown.invalid'
@@ -36,17 +35,14 @@
 #   }
 #
 define usenet_inn2::peer (
-  $ensure     = 'present',
-  $comment    = '',
-  $contact    = 'unknown@unknown.invalid',
-  $incoming   = '',
-  $outgoing   = '',
-  $server     = 'NOSERVER',
-  $server_in  = 'NOSERVER',
-  $server_out = 'NOSERVER'
+  String $comment    = '',
+  String $contact    = 'unknown@unknown.invalid',
+  String $incoming   = '',
+  String $outgoing   = '',
+  String $server     = 'NOSERVER',
+  String $server_in  = 'NOSERVER',
+  String $server_out = 'NOSERVER'
 ) {
-  validate_string ($ensure, $comment, $contact, $incoming, $outgoing)
-  validate_string ($server, $server_in, $server_out)
 
   $incoming_conf = $usenet_inn2::incoming::config
   $newsfeeds     = $usenet_inn2::newsfeeds::config
@@ -63,7 +59,6 @@ define usenet_inn2::peer (
 
   if ($incoming != '') {
     concat::fragment { "incoming_${name}":
-      ensure  => $ensure,
       target  => $incoming_conf,
       content => template ('usenet_inn2/fragments/incoming.conf.erb')
     }
@@ -71,12 +66,10 @@ define usenet_inn2::peer (
 
   if ($outgoing != '') {
     concat::fragment { "newsfeeds_${name}":
-      ensure  => $ensure,
       target  => $newsfeeds,
       content => template ('usenet_inn2/fragments/newsfeeds.erb')
     }
     concat::fragment { "innfeed_${name}":
-      ensure  => $ensure,
       target  => $innfeed_conf,
       content => template ('usenet_inn2/fragments/innfeed.conf.erb')
     }

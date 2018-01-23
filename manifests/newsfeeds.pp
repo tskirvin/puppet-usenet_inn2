@@ -21,11 +21,10 @@
 #   }
 #
 class usenet_inn2::newsfeeds (
-  $news_group = $usenet_inn2::params::news_group,
-  $news_user  = $usenet_inn2::params::news_user,
-  $path_conf  = $usenet_inn2::params::path_conf
+  String $news_group = $usenet_inn2::params::news_group,
+  String $news_user  = $usenet_inn2::params::news_user,
+  String $path_conf  = $usenet_inn2::params::path_conf
 ) inherits usenet_inn2::params {
-  validate_string ($news_group, $news_user, $path_conf)
 
   $config = "${path_conf}/newsfeeds"
 
@@ -33,13 +32,12 @@ class usenet_inn2::newsfeeds (
     owner  => $news_user,
     group  => $news_group,
     notify => Exec['ctlinnd reload newsfeeds'],
-    mode   => 0644;
+    mode   => '0644';
   }
 
   usenet_inn2::ctlinnd { 'reload newsfeeds':
     action  => 'reload',
-    keyword => 'newsfeeds',
-    file    => $config
+    keyword => 'newsfeeds'
   }
 
   concat::fragment { 'newsfeeds_header':

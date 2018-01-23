@@ -13,7 +13,6 @@
 # == Usage
 #
 #   usenet_inn2::cycbuff::meta { '<name>':
-#     ensure => present | absent,
 #     buffer => '<buffer-name>'
 #   }
 #
@@ -21,17 +20,12 @@
 # values.
 #
 define usenet_inn2::cycbuff::meta (
-  $ensure = 'present',
-  $buffer = undef,
+  Array $buffer
 ) {
-  validate_array ($buffer)
-  validate_string ($ensure)
-
   include usenet_inn2::cycbuff_conf
   $config = $usenet_inn2::cycbuff_conf::config
 
   concat::fragment { "metacycbuff-${name}":
-    ensure  => $ensure,
     target  => $config,
     content => template ('usenet_inn2/fragments/cycbuff_meta.erb');
   }

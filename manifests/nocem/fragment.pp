@@ -8,32 +8,27 @@
 #
 # == Parameters
 #
-#   ensure     => present | absent,
 #   issuer     => '<address>',
 #   type       => '<nocem-type>'
 #
 # == Usage
 #
 #   usenet_inn2::nocem::fragment { 'foobar':
-#     ensure => present
 #     issuer => 'foo@bar.invalid',
 #     type   => 'testing'
 #   }
 #
 
 define usenet_inn2::nocem::fragment (
-  $ensure = 'present',
-  $issuer = undef,
-  $type   = undef
+  String $issuer,
+  String $type,
 ) {
-  validate_string ($ensure, $issuer, $type)
 
   include usenet_inn2::nocem::ctl
 
   $config = $usenet_inn2::nocem::ctl::config
 
   concat::fragment { $name:
-    ensure  => $ensure,
     target  => $config,
     content => "# ${name}\n${issuer}:${type}\n\n";
   }

@@ -18,15 +18,13 @@
 #   }
 #
 class usenet_inn2::readers (
-  $news_group = $usenet_inn2::params::news_group,
-  $news_user  = $usenet_inn2::params::news_user,
-  $path_conf  = $usenet_inn2::params::path_conf
+  String $news_group = $usenet_inn2::params::news_group,
+  String $news_user  = $usenet_inn2::params::news_user,
+  String $path_conf  = $usenet_inn2::params::path_conf
 ) inherits usenet_inn2::params {
-  validate_string ($news_group, $news_user, $path_conf)
-
   $config = "${path_conf}/readers.conf"
 
-  concat { $config: owner => $news_user, group => $news_group, mode => 0644 }
+  concat { $config: owner => $news_user, group => $news_group, mode => '0644' }
 
   concat::fragment { 'readers_header':
     target  => $config,

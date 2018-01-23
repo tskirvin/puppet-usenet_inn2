@@ -17,9 +17,9 @@
 #   }
 #
 class usenet_inn2::nocem::ctl (
-  $news_group = $usenet_inn2::params::news_group,
-  $news_user  = $usenet_inn2::params::news_user,
-  $path_conf  = $usenet_inn2::params::path_conf
+  String $news_group = $usenet_inn2::params::news_group,
+  String $news_user  = $usenet_inn2::params::news_user,
+  String $path_conf  = $usenet_inn2::params::path_conf
 ) {
   require usenet_inn2::params
 
@@ -28,7 +28,7 @@ class usenet_inn2::nocem::ctl (
   concat { $config:
     owner => $news_user,
     group => $news_group,
-    mode  => 0644;
+    mode  => '0644';
   }
 
   concat::fragment { 'nocem.ctl.local_header':

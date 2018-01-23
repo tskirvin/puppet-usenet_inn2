@@ -20,12 +20,9 @@
 #   }
 #
 define usenet_inn2::ctlinnd (
-  $action  = undef,
-  $file    = undef,
-  $keyword = undef
+  Enum['flush', 'reload'] $action,
+  String $keyword = '',
 ) {
-  validate_string ($action, $file, $keyword)
-
   case $action {
     flush:  { $ctlcommand = "/usr/sbin/ctlinnd flush '${keyword}'" }
     reload: { $ctlcommand = "/usr/sbin/ctlinnd reload '${keyword}' Puppet" }
@@ -33,7 +30,6 @@ define usenet_inn2::ctlinnd (
   }
   exec { "ctlinnd ${name}":
     command     => $ctlcommand,
-    subscribe   => File[$file],
     refreshonly => true,
   }
 }

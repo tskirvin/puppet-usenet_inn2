@@ -9,7 +9,6 @@
 #
 # == Parameters
 #
-#    ensure       String.  'present' or 'absent'; default: 'present'
 #    access       String.  Default: ''
 #    comment      String.  Default: ''
 #    groups_post  String.  Default: ''
@@ -20,20 +19,17 @@
 #    users        String.  Default: ''
 #
 define usenet_inn2::readers::access::fragment (
-  $ensure      = 'present',
-  $access      = '',
-  $comment     = '',
-  $groups_post = '',
-  $groups_read = '',
-  $newsgroups  = '',
-  $order       = 20,
-  $perlfilter  = 'true',
-  $users       = '*'
+  String $access      = '',
+  String $comment     = '',
+  String $groups_post = '',
+  String $groups_read = '',
+  String $newsgroups  = '',
+  Integer $order      = 20,
+  # lint:ignore:quoted_booleans
+  String $perlfilter  = 'true',
+  # lint:endignore
+  String $users       = '*'
 ) {
-  validate_string ($order)
-  validate_string ($ensure, $access, $comment, $groups_post, $groups_read)
-  validate_string ($newsgroups, $perlfilter, $users)
-
   include usenet_inn2::readers
 
   $config = $usenet_inn2::readers::config
@@ -41,7 +37,6 @@ define usenet_inn2::readers::access::fragment (
   $o = 700 + $order
 
   concat::fragment { "access-${name}":
-    ensure  => $ensure,
     target  => $config,
     order   => $o,
     content => template ('usenet_inn2/fragments/readers_access.conf.erb'),

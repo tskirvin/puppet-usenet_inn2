@@ -14,11 +14,9 @@ class usenet_inn2::nocem () {
 
   usenet_inn2::nocem::fragment {
     'vlad-pgpmoose':
-      ensure => present,
       issuer => 'pgpmoose@killfile.org',
       type   => 'pgpmoose-forged-moderation';
     'bleachbot':
-      ensure => present,
       issuer => 'bleachbot@httrack.com',
       type   => 'site,spam';
   }

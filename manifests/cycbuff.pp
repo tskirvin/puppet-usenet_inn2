@@ -6,7 +6,6 @@
 #
 # == Parameters
 #
-#   ensure  String: 'present' or 'absent'.  Default: 'present'.
 #   buffer  String: file name for the buffer.  No default, required.
 #   group   String: group to control the file.  Default: 'news'
 #   mode    String: permissions for the file.  Default: '0644'
@@ -22,16 +21,12 @@
 #   usenet_inn2::cycbuff::meta { 'ALT': buffer => [ 'A01' ] }
 #
 define usenet_inn2::cycbuff (
-  $ensure = present,
-  $buffer = undef,
-  $group  = 'news',
-  $mode   = '0644',
-  $owner  = 'news',
-  $size   = 1048576
+  Variant[String, Undef] $buffer = undef,
+  String $group = 'news',
+  String $mode  = '0644',
+  String $owner = 'news',
+  Integer $size = 1048576
 ) {
-  validate_string ($size)
-  validate_string ($ensure, $buffer, $group, $owner, $mode)
-
   include usenet_inn2::cycbuff_conf
 
   exec { "cnfs ${name}":
@@ -41,7 +36,6 @@ define usenet_inn2::cycbuff (
   }
 
   file { $name:
-    ensure  => $ensure,
     mode    => $mode,
     owner   => $owner,
     group   => $group,

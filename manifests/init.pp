@@ -24,19 +24,14 @@
 #     path_conf       String: e.g. '/etc/news'
 #
 class usenet_inn2 (
-  $article_cutoff = $usenet_inn2::params::article_cutoff,
-  $host_name      = $::fqdn,
-  $news_group     = $usenet_inn2::params::news_group,
-  $news_user      = $usenet_inn2::params::news_user,
-  $organization   = undef,
-  $packages       = $usenet_inn2::params::packages,
-  $path_conf      = $usenet_inn2::params::path_conf
+  String $organization,
+  Integer $article_cutoff = $usenet_inn2::params::article_cutoff,
+  String $host_name = $::fqdn,
+  String $news_group = $usenet_inn2::params::news_group,
+  String $news_user = $usenet_inn2::params::news_user,
+  Array $packages = $usenet_inn2::params::packages,
+  String $path_conf = $usenet_inn2::params::path_conf
 ) inherits usenet_inn2::params {
-  # validate_integer ($article_cutoff)
-  validate_string ($host_name, $organization)
-  validate_string ($news_group, $news_user, $path_conf)
-  validate_array ($packages)
-
   include usenet_inn2::control_ctl
   include usenet_inn2::cycbuff_conf
   include usenet_inn2::distrib_pats
@@ -46,7 +41,7 @@ class usenet_inn2 (
 
   include usenet_inn2::gpg
 
-  package { $packages: ensure => installed }
+  package { $packages: }
 
   file { $path_conf:
     ensure => directory,

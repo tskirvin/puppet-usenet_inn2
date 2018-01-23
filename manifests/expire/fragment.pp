@@ -7,7 +7,6 @@
 #
 # == Parameters
 #
-#   ensure        String: 'present' or 'absent'.  Default: 'present'
 #   comment       String: comment.  Default: ''
 #   days_default  String: default number of days after which to expire
 #                 articles, or 'never'.  Default: '30'
@@ -29,23 +28,18 @@
 #   }
 #
 define usenet_inn2::expire::fragment (
-  $ensure       = 'present',
-  $pattern      = '*',
-  $flag         = 'A',
-  $comment      = '',
-  $days_min     = '1',
-  $days_default = '30',
-  $days_max     = 'never'
+  String $pattern      = '*',
+  String $flag         = 'A',
+  String $comment      = '',
+  String $days_min     = '1',
+  String $days_default = '30',
+  String $days_max     = 'never'
 ) {
-  validate_string ($ensure, $pattern, $flag, $comment)
-  validate_string ($days_min, $days_default, $days_max)
-
   include usenet_inn2::expire
 
   $config = $usenet_inn2::expire::config
 
   concat::fragment { "expire-${name}":
-    ensure  => $ensure,
     target  => $config,
     content => template ('usenet_inn2/fragments/expire.ctl.erb'),
   }

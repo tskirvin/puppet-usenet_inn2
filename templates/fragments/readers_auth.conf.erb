@@ -2,7 +2,7 @@
     usenet_inn2::readers::auth::fragment -%>
 # <%= @comment %>
 auth <%= @name %> {
-<% if hosts != '*' -%>
+<% if @hosts != '*' -%>
     hosts:   "<%= @hosts %>"
 <% end -%>
 <% if @auth != '' -%>

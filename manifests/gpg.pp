@@ -21,15 +21,15 @@
 #
 #
 class usenet_inn2::gpg (
-  $path_conf = $usenet_inn2::params::path_conf
+  String $path_conf = $usenet_inn2::params::path_conf
 ) inherits usenet_inn2::params {
   $gpg_opts = '--no-default-keyring --no-options --allow-non-selfsigned-uid --no-permission-warning'
   $keyring = "${path_conf}/pgp/pubring.gpg"
 
   exec { 'gpg import':
-    command     => "/bin/rm -f ${keyring} && gpg ${gpg_opts} --primary-keyring ${keyring} --import ${path_conf}/pgp/keys/*",
-    creates     => $keyring,
-    notify      => File["${path_conf}/pgp/pubring.gpg"],
+    command => "/bin/rm -f ${keyring} && gpg ${gpg_opts} --primary-keyring ${keyring} --import ${path_conf}/pgp/keys/*",
+    creates => $keyring,
+    notify  => File["${path_conf}/pgp/pubring.gpg"],
   }
 
   file { "${path_conf}/pgp":
