@@ -7,10 +7,15 @@
   "source": "https://github.com/tskirvin/puppet-usenet_inn2",
   "project_page": "https://github.com/tskirvin/puppet-usenet_inn2",
   "issues_url": "",
-  "tags": [
-    "inn2",
-    "usenet",
-    "netnews"
+  "dependencies": [
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.0.2 <= 2.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.5.1 <= 6.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
@@ -21,8 +26,18 @@
       ]
     }
   ],
-  "dependencies": [
-    {"name":"puppetlabs/concat","version_requirement":">= 1.0.2 <= 2.0.0"},
-    {"name":"puppetlabs/stdlib","version_requirement":">= 4.5.1 <= 6.0.0"}
-  ]
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 6.0.0"
+    }
+  ],
+  "tags": [
+    "inn2",
+    "usenet",
+    "netnews"
+  ],
+  "pdk-version": "1.4.0.pre (g767800f)",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "heads/master-0-g059c195"
 }
